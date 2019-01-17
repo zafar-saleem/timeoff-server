@@ -21,10 +21,10 @@ const httpResponse = {
 }
 
 function loginUser(request, response) { 
-  let { email, password } = request.body;
+  let { username, password } = request.body;
 
   User.findOne({
-    email: email
+    username: username
   }, function(error, user) {
     if (error) throw error;
 
