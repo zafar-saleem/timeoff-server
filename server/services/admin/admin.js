@@ -28,6 +28,23 @@ function save(request, response) {
   }
 }
 
+function fetchEmployees(request, response) {
+  Employees.find({}, (error, docs) => {
+    if (error) response.json(error);
+
+    let updatedDocument = docs.map(doc => {
+      let documentToObject = doc.toObject();
+
+      delete documentToObject.password;
+
+      return documentToObject;
+    });
+
+    response.json(updatedDocument);
+  });
+}
+
 module.exports = {
-  save: save
+  save: save,
+  fetchEmployees: fetchEmployees
 };

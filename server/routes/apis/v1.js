@@ -15,5 +15,6 @@ router.use('/login', loginController);
 router.use('/dashboard', dashboardController);
 
 router.use('/admin/new', adminController);
+router.use('/admin/list', adminController);
 
 module.exports = router;
