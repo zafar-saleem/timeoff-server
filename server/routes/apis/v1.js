@@ -6,6 +6,8 @@ const dashboardController = require('../../controllers/apis/dashboard');
 
 const adminController = require('../../controllers/apis/admin');
 
+const employeeController = require('../../controllers/apis/employee');
+
 const express = require('express');
 
 let router = express.Router();
@@ -16,5 +18,7 @@ router.use('/dashboard', dashboardController);
 
 router.use('/admin/new', adminController);
 router.use('/admin/list', adminController);
+
+router.use('/employee/details', employeeController);
 
 module.exports = router;
