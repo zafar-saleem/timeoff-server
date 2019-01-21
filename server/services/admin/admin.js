@@ -5,26 +5,39 @@ const apiRoutes = express.Router();
 
 const Employees = require('../../models/Employees');
 const User = require('../../models/User');
+const utils = require('../../utils');
+
+const httpResponses = {
+  clientAdminFailed: {
+    success: false,
+    message: 'Tried to access admin area from the client side. Only Admin can access this page'
+  },
+  employeeAddedSuccessfully: {
+    success: true,
+    message: 'New employee added successfully'
+  }
+}
 
 function save(request, response) {
-  if (request.body.access === 'Admin') {
-    delete request.body.access;
-
-    User.find({ _id: request.body.id }, (error, user) => {
-      if (error) response.json(error);
-
-      delete request.body.id;
-
-      let employee = new Employees(request.body);
-
-      employee.save(error => {
+  const { name, role, position, username, password } = request.body;
+  
+  if (request.body.admin.access === 'Admin') {
+    utils.checkUserControl(request.body.admin.id)
+      .then(user => {
         if (error) response.json(error);
 
-        response.json({ success: true, message: 'New employee added successfully' }); 
+        let employee = new Employees({ name, role, position, username, password });
+
+        employee.save(error => {
+          if (error) response.json(error);
+
+          response.json(httpResponses.employeeAddedSuccessfully);
+        });
+      }).catch(error => {
+        response.json(error);
       });
-    });
   } else {
-    response.json({ success: false, message: 'Only Admin can access this page' });
+    response.json(httpResponses.clientAdminFailed);
   }
 }
 
