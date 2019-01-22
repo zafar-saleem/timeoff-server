@@ -57,7 +57,24 @@ function fetchEmployees(request, response) {
   });
 }
 
+function fetchEmployeesCount(request, response) {
+  const id = request.query.id;
+
+  utils.checkUserControl(id)
+    .then(user => {
+      Employees.find({}, (error, docs) => {
+        if (error) response.json(error);
+
+        response.json({ total: docs.length });
+      });
+    })
+    .catch(error => {
+      response.json(error);
+    });
+}
+
 module.exports = {
   save: save,
-  fetchEmployees: fetchEmployees
+  fetchEmployees: fetchEmployees,
+  fetchEmployeesCount: fetchEmployeesCount
 };
