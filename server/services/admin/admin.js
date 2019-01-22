@@ -24,9 +24,7 @@ function save(request, response) {
   if (request.body.admin.access === 'Admin') {
     utils.checkUserControl(request.body.admin.id)
       .then(user => {
-        if (error) response.json(error);
-
-        let employee = new Employees({ name, role, position, username, password });
+        let employee = new Employees({ name, role, position, username, password, status: false });
 
         employee.save(error => {
           if (error) response.json(error);
@@ -73,8 +71,24 @@ function fetchEmployeesCount(request, response) {
     });
 }
 
+function fetchOnlineEmployees(request, response) {
+  const id = request.query.id;
+
+  utils.checkUserControl(id)
+    .then(user => {
+      Employees.find({ status: true }, (error, docs) => {
+        if (error) return response.json(error);
+        return response.json(docs.length);
+      });
+    })
+    .catch(error => {
+      response.json(error);
+    });
+}
+
 module.exports = {
   save: save,
   fetchEmployees: fetchEmployees,
-  fetchEmployeesCount: fetchEmployeesCount
+  fetchEmployeesCount: fetchEmployeesCount,
+  fetchOnlineEmployees: fetchOnlineEmployees
 };

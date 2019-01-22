@@ -8,6 +8,7 @@ const passport = require('passport');
 const db = require('../../../configs/db');
 
 const User = require('../../models/User');
+const Employees = require('../../models/Employees');
 
 const httpResponse = {
   onUserNotFound: {
@@ -20,32 +21,68 @@ const httpResponse = {
   }
 }
 
+let admin = false;
+let http, userPassword, userUsername;
+
 function loginUser(request, response) { 
   let { username, password } = request.body;
 
   User.findOne({
     username: username
   }, function(error, user) {
-    if (error) throw error;
-
+    if (error) response.json(error);
+    console.log(user);
     if (!user) {
-      return response.send(httpResponse.onUserNotFound);
+      Employees.findOne({
+        username: username
+      }, (error, employee) => {
+        if (error) return response.json(error);
+        if (!employee) return response.json(httpResponse.onUserNotFound);
+        admin = false;
+        userUsername = username;
+        userPassword = password;
+        http = response;
+
+        comparePassword(employee);
+      });
+    } else {
+      admin = true;
+      userUsername = username;
+      userPassword = password;
+      http = response;
+
+      comparePassword(user);
     }
-
-    // Check if password matches
-    user.comparePassword(password, function(error, isMatch) {
-      if (isMatch && !error) {
-        var token = jwt.sign(user.toJSON(), db.secret, {
-          expiresIn: 10080
-        });
-
-        return response.json({ success: true, role: user.role, id: user._id, token: 'JWT ' + token });
-      }
-
-      response.send(httpResponse.onAuthenticationFail);
-    });
   });
 };
+
+function comparePassword(user) {
+  let responseToken;
+
+  user.comparePassword(userPassword, function(error, isMatch) {
+    if (error) return http.json(error);
+    if (isMatch && !error) {
+      var token = jwt.sign(user.toJSON(), db.secret, {
+        expiresIn: 10080
+      });
+
+      if (!admin) {
+        Employees.update({ username: userUsername }, { $set: { status: true }});
+      }
+
+      userUsername = '';
+      userPassword = ''; 
+
+      if (user != null) {
+        responseToken = { success: true, role: user.role, id: user._id, token: 'JWT ' + token };
+      }
+
+      return http.json(responseToken);
+    }
+
+    return http.json(httpResponse.onAuthenticationFail);
+  });
+}
 
 module.exports = {
   loginUser: loginUser

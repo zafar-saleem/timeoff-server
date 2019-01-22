@@ -10,5 +10,6 @@ let router = express.Router();
 router.post('/', passport.authenticate('jwt', { session: false }), adminService.save);
 router.get('/', passport.authenticate('jwt', { session: false }), adminService.fetchEmployees);
 router.get('/count', passport.authenticate('jwt', { session: false }), adminService.fetchEmployeesCount);
+router.get('/online', passport.authenticate('jwt', { session: false }), adminService.fetchOnlineEmployees);
 
 module.exports = router;

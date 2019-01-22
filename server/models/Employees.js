@@ -20,6 +20,9 @@ const EmployeesSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  status: {
+    type: Boolean
+  },
   role: {
     type: String,
     required: true
