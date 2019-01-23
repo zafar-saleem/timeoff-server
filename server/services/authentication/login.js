@@ -9,6 +9,7 @@ const db = require('../../../configs/db');
 
 const User = require('../../models/User');
 const Employees = require('../../models/Employees');
+const Activities = require('../../models/Activities');
 
 const httpResponse = {
   onUserNotFound: {
@@ -30,8 +31,7 @@ function loginUser(request, response) {
   User.findOne({
     username: username
   }, function(error, user) {
-    if (error) response.json(error);
-    console.log(user);
+    if (error) return response.json(error);
     if (!user) {
       Employees.findOne({
         username: username
@@ -69,13 +69,19 @@ function comparePassword(user) {
       if (!admin) {
         Employees.update({ username: userUsername }, { $set: { status: true }});
       }
-
-      userUsername = '';
-      userPassword = ''; 
-
+      console.log(user);
       if (user != null) {
         responseToken = { success: true, role: user.role, id: user._id, token: 'JWT ' + token };
       }
+
+      new Activities({
+        username: userUsername,
+        activity: `${userUsername} logged in`,
+        date: new Date()
+      }).save();
+
+      userUsername = '';
+      userPassword = ''; 
 
       return http.json(responseToken);
     }
