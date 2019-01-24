@@ -63,13 +63,13 @@ function comparePassword(user) {
     if (error) return http.json(error);
     if (isMatch && !error) {
       var token = jwt.sign(user.toJSON(), db.secret, {
-        expiresIn: 10080
+        expiresIn: '1h'
       });
 
       if (!admin) {
         Employees.update({ username: userUsername }, { $set: { status: true }});
       }
-      console.log(user);
+
       if (user != null) {
         responseToken = { success: true, role: user.role, id: user._id, token: 'JWT ' + token };
       }

@@ -7,7 +7,7 @@ const employeeService = require('../../services/employees/employee');
 
 let router = express.Router();
 
-router.get('/', passport.authenticate('jwt', { session: false }), employeeService.fetchDetails);
-// router.get('/', passport.authenticate('jwt', { session: false }), adminService.fetchEmployees);
+router.get('/details', passport.authenticate('jwt', { session: false }), employeeService.fetchDetails);
+router.put('/details', passport.authenticate('jwt', { session: false }), employeeService.updateDetails);
 
 module.exports = router;

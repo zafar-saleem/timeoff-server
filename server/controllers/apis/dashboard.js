@@ -6,7 +6,6 @@ const dashboardService = require('../../services/dashboard/dashboard');
 
 let router = express.Router();
 
-// router.get('/', passport.authenticate('jwt', { session: false }), dashboardService.getDashboard);
 router.get('/count', passport.authenticate('jwt', { session: false }), dashboardService.fetchEmployeesCount);
 router.get('/online', passport.authenticate('jwt', { session: false }), dashboardService.fetchOnlineEmployees);
 router.get('/activities', passport.authenticate('jwt', { session: false }), dashboardService.fetchActivities);
