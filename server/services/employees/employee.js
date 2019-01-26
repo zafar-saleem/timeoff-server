@@ -1,5 +1,6 @@
 const Employees = require('../../models/Employees');
 
+const Activities = require('../../models/Activities');
 const utils = require('../../utils');
 
 function fetchDetails(request, response) {
@@ -31,6 +32,13 @@ function updateDetails(request, response) {
       .then(user => {
         Employees.findOneAndUpdate({ _id: request.body._id }, record, { new: true }, (error, doc) => {
           if (error) response.json(error);
+
+          new Activities({
+            username: 'Admin',
+            activity: `Admin updated details for ${request.body.username}`,
+            date: new Date()
+          }).save();
+          
           response.json({ success: true, message: 'Details updated successfully' });
         });
       })
