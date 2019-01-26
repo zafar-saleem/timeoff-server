@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const ActivitiesSchema = new mongoose.Schema({
   username: {
     type: String,
-    required: true
+    required: true,
+    unique: false
   },
   activity: {
     type: String,

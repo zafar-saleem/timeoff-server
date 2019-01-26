@@ -5,6 +5,8 @@ const apiRoutes = express.Router();
 
 const Employees = require('../../models/Employees');
 const User = require('../../models/User');
+const Activities = require('../../models/Activities');
+
 const utils = require('../../utils');
 
 const httpResponses = {
@@ -28,6 +30,12 @@ function save(request, response) {
 
         employee.save(error => {
           if (error) response.json(error);
+
+          new Activities({
+            username: 'Admin',
+            activity: `Admin added ${username}`,
+            date: new Date()
+          }).save();
 
           response.json(httpResponses.employeeAddedSuccessfully);
         });
@@ -54,37 +62,6 @@ function fetchEmployees(request, response) {
     response.json(updatedDocument);
   });
 }
-
-// function fetchEmployeesCount(request, response) {
-//   const id = request.query.id;
-
-//   utils.checkUserControl(id)
-//     .then(user => {
-//       Employees.find({}, (error, docs) => {
-//         if (error) response.json(error);
-
-//         response.json({ total: docs.length });
-//       });
-//     })
-//     .catch(error => {
-//       response.json(error);
-//     });
-// }
-
-// function fetchOnlineEmployees(request, response) {
-//   const id = request.query.id;
-
-//   utils.checkUserControl(id)
-//     .then(user => {
-//       Employees.find({ status: true }, (error, docs) => {
-//         if (error) return response.json(error);
-//         return response.json(docs.length);
-//       });
-//     })
-//     .catch(error => {
-//       response.json(error);
-//     });
-// }
 
 module.exports = {
   save: save,
