@@ -3,6 +3,8 @@ const Employees = require('../../models/Employees');
 const Activities = require('../../models/Activities');
 const utils = require('../../utils');
 
+let user;
+
 function fetchDetails(request, response) {
   const employeeID = request.query.id;
 
@@ -27,18 +29,16 @@ function updateDetails(request, response) {
     status: false
   };
 
+  user = record.username;
+
   if (request.body.admin.access === 'Admin') {
     utils.checkUserControl(request.body.admin.id)
       .then(user => {
         Employees.findOneAndUpdate({ _id: request.body._id }, record, { new: true }, (error, doc) => {
           if (error) response.json(error);
 
-          new Activities({
-            username: 'Admin',
-            activity: `Admin updated details for ${request.body.username}`,
-            date: new Date()
-          }).save();
-          
+          setActivity();
+
           response.json({ success: true, message: 'Details updated successfully' });
         });
       })
@@ -48,6 +48,14 @@ function updateDetails(request, response) {
   } else {
     response.json({ success: false, message: 'Client is not admin' });
   }
+}
+
+function setActivity() {
+  new Activities({
+    username: 'Admin',
+    activity: `Admin updated details for ${user}`,
+    date: new Date()
+  }).save();
 }
 
 module.exports = {

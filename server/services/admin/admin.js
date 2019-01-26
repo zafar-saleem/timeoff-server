@@ -9,6 +9,8 @@ const Activities = require('../../models/Activities');
 
 const utils = require('../../utils');
 
+let user;
+
 const httpResponses = {
   clientAdminFailed: {
     success: false,
@@ -22,6 +24,7 @@ const httpResponses = {
 
 function save(request, response) {
   const { name, role, position, username, password } = request.body;
+  user = username
   
   if (request.body.admin.access === 'Admin') {
     utils.checkUserControl(request.body.admin.id)
@@ -31,11 +34,7 @@ function save(request, response) {
         employee.save(error => {
           if (error) response.json(error);
 
-          new Activities({
-            username: 'Admin',
-            activity: `Admin added ${username}`,
-            date: new Date()
-          }).save();
+          setActivity();
 
           response.json(httpResponses.employeeAddedSuccessfully);
         });
@@ -61,6 +60,14 @@ function fetchEmployees(request, response) {
 
     response.json(updatedDocument);
   });
+}
+
+function setActivity() {
+  new Activities({
+    username: 'Admin',
+    activity: `Admin added ${user}`,
+    date: new Date()
+  }).save();
 }
 
 module.exports = {

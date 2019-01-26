@@ -70,24 +70,28 @@ function comparePassword(user) {
         Employees.update({ username: userUsername }, { $set: { status: true }});
       }
 
+      setActivity();
+
       if (user != null) {
         responseToken = { success: true, role: user.role, id: user._id, token: 'JWT ' + token };
-      }
-
-      new Activities({
-        username: userUsername,
-        activity: `${userUsername} logged in`,
-        date: new Date()
-      }).save();
-
-      userUsername = '';
-      userPassword = ''; 
+      } 
 
       return http.json(responseToken);
     }
 
     return http.json(httpResponse.onAuthenticationFail);
   });
+}
+
+function setActivity() {
+  new Activities({
+    username: userUsername,
+    activity: `${userUsername} logged in`,
+    date: new Date()
+  }).save();
+
+  userUsername = '';
+  userPassword = '';
 }
 
 module.exports = {
