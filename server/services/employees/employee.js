@@ -11,23 +11,37 @@ const httpResponses = {
   onClientAdminFail: {
     success: false,
     message: 'Client is not admin'
+  },
+  onServerAdminFail: {
+    success: false,
+    message: 'This area is for admin only'
   }
 };
 
 let user;
 
 function fetchDetails(request, response) {
-  const employeeID = request.query.id;
+  const employeeID = request.query.employeeID;
 
-  Employees.findOne({ _id: employeeID }, (error, doc) => {
-    if (error) response.json(error);
+  if (request.query.access !== 'Admin') {
+    return response.json(httpResponses.onClientAdminFail);
+  }
 
-    const employee = doc.toObject();
+  utils.checkUserControl(request.query.id)
+    .then(user => {
+      Employees.findOne({ _id: employeeID }, (error, doc) => {
+        if (error) response.json(error);
 
-    delete employee.password;
+        const employee = doc.toObject();
 
-    response.json(employee);
-  });
+        delete employee.password; 
+
+        response.json(employee);
+      });
+    })
+    .catch(error => {
+      response.json(httpResponses.onServerAdminFail);
+    });
 }
 
 function updateDetails(request, response) {
