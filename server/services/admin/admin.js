@@ -16,6 +16,10 @@ const httpResponses = {
     success: false,
     message: 'Tried to access admin area from the client side. Only Admin can access this page'
   },
+  onServerAdminFail: {
+    success: false,
+    message: 'This are is for admin users only'
+  },
   employeeAddedSuccessfully: {
     success: true,
     message: 'New employee added successfully'
@@ -47,19 +51,29 @@ function save(request, response) {
 }
 
 function fetchEmployees(request, response) {
-  Employees.find({}, (error, docs) => {
-    if (error) response.json(error);
+  if (request.query.access !== 'Admin') {
+    return response.json(httpResponses.clientAdminFailed);
+  }
 
-    let updatedDocument = docs.map(doc => {
-      let documentToObject = doc.toObject();
+  utils.checkUserControl(request.query.id)
+    .then(user => {
+      Employees.find({}, (error, docs) => {
+        if (error) response.json(error);
 
-      delete documentToObject.password;
+        let updatedDocument = docs.map(doc => {
+          let documentToObject = doc.toObject();
 
-      return documentToObject;
+          delete documentToObject.password;
+
+          return documentToObject;
+        });
+
+        response.json(updatedDocument);
+      });
+    })
+    .catch(error => {
+      response.json(httpResponses.onServerAdminFail);
     });
-
-    response.json(updatedDocument);
-  });
 }
 
 function setActivity() {

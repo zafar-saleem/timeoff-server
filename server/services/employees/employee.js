@@ -3,6 +3,17 @@ const Employees = require('../../models/Employees');
 const Activities = require('../../models/Activities');
 const utils = require('../../utils');
 
+const httpResponses = {
+  onUpdateSuccess: {
+    success: true,
+    message: 'Details updated successfully'
+  },
+  onClientAdminFail: {
+    success: false,
+    message: 'Client is not admin'
+  }
+};
+
 let user;
 
 function fetchDetails(request, response) {
@@ -34,19 +45,23 @@ function updateDetails(request, response) {
   if (request.body.admin.access === 'Admin') {
     utils.checkUserControl(request.body.admin.id)
       .then(user => {
-        Employees.findOneAndUpdate({ _id: request.body._id }, record, { new: true }, (error, doc) => {
+        let query = {
+          _id: request.body._id 
+        };
+
+        Employees.findOneAndUpdate(query, record, { new: true }, (error, doc) => {
           if (error) response.json(error);
 
           setActivity();
 
-          response.json({ success: true, message: 'Details updated successfully' });
+          response.json(httpResponses.onUpdateSuccess);
         });
       })
       .catch(error => {
         response.json(error);
       });
   } else {
-    response.json({ success: false, message: 'Client is not admin' });
+    response.json(httpResponses.onClientAdminFail);
   }
 }
 
