@@ -61,29 +61,29 @@ function updateDetails(request, response) {
 
   user = record.username;
 
-  if (request.body.admin.access === 'Admin') {
-    utils.checkUserControl(request.body.admin.id)
-      .then(admin => {
-        let query = {
-          _id: request.body._id
-        };
-
-        Employees.findOneAndUpdate(query, record, { new: true }, (error, doc) => {
-          if (error) response.json(error);
-
-          activity = `${admin} updated their details.`,
-          setActivity();
-          user = null;
-
-          response.json(httpResponses.onUpdateSuccess);
-        });
-      })
-      .catch(error => {
-        response.json(error);
-      });
-  } else {
-    response.json(httpResponses.onClientAdminFail);
+  if (request.body.admin.access !== 'Admin') {
+    return response.json(httpResponses.onClientAdminFail);
   }
+
+  utils.checkUserControl(request.body.admin.id)
+    .then(admin => {
+      let query = {
+        _id: request.body._id
+      };
+
+      Employees.findOneAndUpdate(query, record, { new: true }, (error, doc) => {
+        if (error) response.json(error);
+
+        activity = `${admin} updated their details.`,
+        setActivity();
+        user = null;
+
+        response.json(httpResponses.onUpdateSuccess);
+      });
+    })
+    .catch(error => {
+      response.json(error);
+    });
 }
 
 function setVacations(request, response) {
