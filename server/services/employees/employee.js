@@ -18,7 +18,7 @@ const httpResponses = {
     message: 'This area is for admin only'
   },
   onSetVacationSuccess: {
-    success: false,
+    success: true,
     message: 'Your vacations set successfully.'
   }
 };
