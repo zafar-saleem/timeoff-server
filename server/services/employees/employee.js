@@ -28,25 +28,15 @@ let user, activity;
 function fetchDetails(request, response) {
   const employeeID = request.query.employeeID;
 
-  if (request.query.access !== 'Admin') {
-    return response.json(httpResponses.onClientAdminFail);
-  }
+  Employees.findOne({ _id: employeeID }, (error, doc) => {
+    if (error) response.json(error);
 
-  utils.checkUserControl(request.query.id)
-    .then(user => {
-      Employees.findOne({ _id: employeeID }, (error, doc) => {
-        if (error) response.json(error);
+    const employee = doc.toObject();
 
-        const employee = doc.toObject();
+    delete employee.password; 
 
-        delete employee.password; 
-
-        response.json(employee);
-      });
-    })
-    .catch(error => {
-      response.json(httpResponses.onServerAdminFail);
-    });
+    response.json(employee);
+  });
 }
 
 function updateDetails(request, response) {
