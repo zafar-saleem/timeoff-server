@@ -6,11 +6,11 @@ const VacationsSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  startDate: {
+  start: {
     type: Date,
     required: true
   },
-  endDate: {
+  end: {
     type: Date,
     required: true
   },

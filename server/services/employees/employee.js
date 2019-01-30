@@ -78,7 +78,7 @@ function updateDetails(request, response) {
 
 function setVacations(request, response) {
   new Vacations(request.body).save((error, doc) => {
-    if (error) response.json(error);
+    if (error) return response.json(error);
 
     getUser(request.body.employeeID)
       .then(name => {
@@ -88,10 +88,10 @@ function setVacations(request, response) {
 
         user = null;
       }).catch(err => {
-        response.json(err);
+        return response.json(err);
       });
 
-    response.json(httpResponses.onSetVacationSuccess);
+    return response.json(httpResponses.onSetVacationSuccess);
   });
 }
 
@@ -112,8 +112,16 @@ function setActivity() {
   }).save();
 }
 
+function fetchVacations(request, response) {
+  Vacations.find({ employeeID: request.query.id }, (error, docs) => {
+    if (error) return response.json(error);
+    return response.json(docs);
+  });
+}
+
 module.exports = {
   fetchDetails: fetchDetails,
   updateDetails: updateDetails,
-  setVacations: setVacations
+  setVacations: setVacations,
+  fetchVacations: fetchVacations
 };
