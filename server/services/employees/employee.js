@@ -23,6 +23,8 @@ const httpResponses = {
   }
 };
 
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
 let user, activity;
 
 function fetchDetails(request, response) {
@@ -96,9 +98,39 @@ function setVacations(request, response) {
 }
 
 function fetchVacations(request, response) {
-  Vacations.find({ employeeID: request.query.id }, (error, docs) => {
+  Vacations.find({ employeeID: request.query.id }).lean().exec((error, docs) => {
     if (error) return response.json(error);
-    return response.json(docs);
+    formatDates(docs).then(item => {
+      return response.json(docs);
+    });
+  });
+}
+
+function formatDates(vacations) {
+  return new Promise((resolve, reject) => {
+    let dates = vacations.map(item => {
+      item['startDate'] = null;
+      item['endDate'] = null;
+
+      const startDate = new Date(item.start);
+
+      const startDay = startDate.getDate();
+      const startMonth = months[startDate.getMonth()];
+      const startYear = startDate.getFullYear();
+
+      const endDate = new Date(item.end);
+
+      const endDay = endDate.getDate();
+      const endMonth = months[endDate.getMonth()];
+      const endYear = endDate.getFullYear();
+
+      item['start'] = startMonth + ' ' + startDay + ', ' + startYear;
+      item['end'] = endMonth + ' ' + endDay + ', ' + endYear;
+
+      return item;
+    });
+
+    resolve(dates);
   });
 }
 
