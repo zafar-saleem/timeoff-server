@@ -95,6 +95,36 @@ function setVacations(request, response) {
   });
 }
 
+function fetchVacations(request, response) {
+  Vacations.find({ employeeID: request.query.id }, (error, docs) => {
+    if (error) return response.json(error);
+    return response.json(docs);
+  });
+}
+
+function deleteVacation(request, response) {
+  Vacations.findOneAndDelete({ _id: request.body.id }, (error, docs) => {
+    if (error) return response.json(error);
+
+    Vacations.find({ employeeID: request.body.employeeID }, (error, docs) => {
+      if (error) return response.json(error);
+
+      getUser(request.body.employeeID)
+        .then(name => {
+          activity = `${name} deleted vacation`,
+          user = name;
+          setActivity();
+
+          user = null;
+        }).catch(err => {
+          return response.json(err);
+        });
+
+      return response.json(docs);
+    });
+  });
+}
+
 function getUser(id) {
   return new Promise((resolve, reject) => {
     Employees.findOne({ _id: id }, (error, user) => {
@@ -110,25 +140,6 @@ function setActivity() {
     activity: activity,
     date: new Date()
   }).save();
-}
-
-function fetchVacations(request, response) {
-  Vacations.find({ employeeID: request.query.id }, (error, docs) => {
-    if (error) return response.json(error);
-    return response.json(docs);
-  });
-}
-
-function deleteVacation(request, response) {
-  Vacations.findOneAndDelete({ _id: request.body.id }, (error, docs) => {
-    if (error) return response.json(error);
-
-    Vacations.find({ employeeID: request.body.employeeID }, (error, docs) => {
-      if (error) return response.json(error);
-      return response.json(docs);
-    });
-    // return response.json(docs);
-  });
 }
 
 module.exports = {
