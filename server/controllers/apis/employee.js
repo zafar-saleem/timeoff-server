@@ -11,5 +11,6 @@ router.get('/details', passport.authenticate('jwt', { session: false }), employe
 router.put('/details', passport.authenticate('jwt', { session: false }), employeeService.updateDetails);
 router.post('/vacation', passport.authenticate('jwt', { session: false }), employeeService.setVacations);
 router.get('/vacation', passport.authenticate('jwt', { session: false }), employeeService.fetchVacations);
+router.delete('/vacation', passport.authenticate('jwt', { session: false }), employeeService.deleteVacation);
 
 module.exports = router;

@@ -119,9 +119,22 @@ function fetchVacations(request, response) {
   });
 }
 
+function deleteVacation(request, response) {
+  Vacations.findOneAndDelete({ _id: request.body.id }, (error, docs) => {
+    if (error) return response.json(error);
+
+    Vacations.find({ employeeID: request.body.employeeID }, (error, docs) => {
+      if (error) return response.json(error);
+      return response.json(docs);
+    });
+    // return response.json(docs);
+  });
+}
+
 module.exports = {
   fetchDetails: fetchDetails,
   updateDetails: updateDetails,
   setVacations: setVacations,
-  fetchVacations: fetchVacations
+  fetchVacations: fetchVacations,
+  deleteVacation: deleteVacation
 };
