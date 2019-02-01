@@ -34,7 +34,8 @@ function loginUser(request, response) {
     if (error) return response.json(error);
     if (!user) {
       Employees.findOne({
-        username: username
+        username: username,
+        active: true
       }, (error, employee) => {
         if (error) return response.json(error);
         if (!employee) return response.json(httpResponse.onUserNotFound);
