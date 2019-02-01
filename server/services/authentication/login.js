@@ -68,7 +68,8 @@ function comparePassword(user) {
       });
 
       if (!admin) {
-        Employees.update({ username: userUsername }, { $set: { status: true }});
+        Employees.update({ username: userUsername }, { status: true }, (error, status) => {
+        });
       }
 
       setActivity();
