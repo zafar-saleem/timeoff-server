@@ -76,6 +76,27 @@ function fetchEmployees(request, response) {
     });
 }
 
+function deactivate(request, response) {
+  console.log(request.body);
+
+  if (request.body.admin.access !== 'Admin') {
+    return response.json(httpResponses.clientAdminFailed);
+  }
+
+  utils.checkUserControl(request.body.admin.id)
+    .then(admin => {
+      Employees.update({ _id: request.body.id }, {
+        active: false
+      }, (error, doc) => {
+        if (error) response.json(error);
+        response.json({ success: true, message: 'User Deactivated' });
+      });
+    })
+    .catch(error => {
+      response.json(httpResponses.onServerAdminFail);
+    });
+}
+
 function setActivity() {
   new Activities({
     username: 'Admin',
@@ -86,5 +107,6 @@ function setActivity() {
 
 module.exports = {
   save: save,
-  fetchEmployees: fetchEmployees
+  fetchEmployees: fetchEmployees,
+  deactivate: deactivate
 };
