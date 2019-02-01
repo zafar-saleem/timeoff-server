@@ -33,7 +33,7 @@ function save(request, response) {
   if (request.body.admin.access === 'Admin') {
     utils.checkUserControl(request.body.admin.id)
       .then(user => {
-        let employee = new Employees({ name, role, position, username, password, status: false });
+        let employee = new Employees({ name, role, position, username, password, status: false, active: true });
 
         employee.save(error => {
           if (error) response.json(error);
@@ -77,8 +77,6 @@ function fetchEmployees(request, response) {
 }
 
 function deactivate(request, response) {
-  console.log(request.body);
-
   if (request.body.admin.access !== 'Admin') {
     return response.json(httpResponses.clientAdminFailed);
   }
