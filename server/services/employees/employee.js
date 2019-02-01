@@ -32,6 +32,7 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 let user, activity;
 
 function fetchDetails(request, response) {
+  console.log(request.query);
   const employeeID = request.query.employeeID;
 
   Employees.findOne({ _id: employeeID }, (error, doc) => {
@@ -41,22 +42,13 @@ function fetchDetails(request, response) {
 
     delete employee.password; 
 
+    console.log(employee);
+
     response.json(employee);
   });
 }
 
 function updateDetails(request, response) {
-  let record = {
-    name: request.body.name,
-    role: request.body.role,
-    position: request.body.position,
-    username: request.body.username,
-    password: request.body.password,
-    status: false
-  };
-
-  user = record.username;
-
   if (request.body.admin.access !== 'Admin') {
     return response.json(httpResponses.onClientAdminFail);
   }
@@ -66,6 +58,20 @@ function updateDetails(request, response) {
       let query = {
         _id: request.body._id
       };
+
+      if (request.body.password === '') {
+        return response.json({ success: false, message: 'Please enter new or old password' });
+      }
+
+      let record = {
+        name: request.body.name,
+        role: request.body.role,
+        position: request.body.position,
+        username: request.body.username,
+        password: request.body.password
+      };
+
+      user = record.username;
 
       Employees.findOneAndUpdate(query, record, { new: true }, (error, doc) => {
         if (error) response.json(error);
