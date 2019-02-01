@@ -20,6 +20,10 @@ const httpResponses = {
   onSetVacationSuccess: {
     success: true,
     message: 'Your vacations set successfully.'
+  },
+  onVacationExist: {
+    success: false,
+    message: 'You already setup vacation on this date'
   }
 };
 
@@ -79,21 +83,28 @@ function updateDetails(request, response) {
 }
 
 function setVacations(request, response) {
-  new Vacations(request.body).save((error, doc) => {
+  Vacations.findOne({
+    start: request.body.start
+  }, (error, doc) => {
     if (error) return response.json(error);
+    if (doc) return response.json(httpResponses.onVacationExist);
 
-    getUser(request.body.employeeID)
-      .then(name => {
-        activity = `${name} set vacations`,
-        user = name;
-        setActivity();
+    new Vacations(request.body).save((error, doc) => {
+      if (error) return response.json(error);
 
-        user = null;
-      }).catch(err => {
-        return response.json(err);
-      });
+      getUser(request.body.employeeID)
+        .then(name => {
+          activity = `${name} set vacations`,
+          user = name;
+          setActivity();
 
-    return response.json(httpResponses.onSetVacationSuccess);
+          user = null;
+        }).catch(err => {
+          return response.json(err);
+        });
+
+      return response.json(httpResponses.onSetVacationSuccess);
+    });
   });
 }
 
