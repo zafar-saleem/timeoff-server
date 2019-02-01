@@ -9,7 +9,7 @@ const Activities = require('../../models/Activities');
 
 const utils = require('../../utils');
 
-let user;
+let user, activity;
 
 const httpResponses = {
   clientAdminFailed: {
@@ -87,7 +87,18 @@ function deactivate(request, response) {
         active: false
       }, (error, doc) => {
         if (error) response.json(error);
-        response.json({ success: true, message: 'User Deactivated' });
+
+        getUser(request.body.id)
+          .then(user => {
+            user = user.name;
+            activity = `Admin deactivated ${user}`;
+            setActivity();
+
+            response.json({ success: true, message: 'User Deactivated' });
+          })
+          .catch(error => {
+            console.log(error);
+          });
       });
     })
     .catch(error => {
@@ -95,10 +106,19 @@ function deactivate(request, response) {
     });
 }
 
+function getUser(id) {
+  return new Promise((resolve, reject) => {
+    Employees.findOne({ _id: id }, (error, user) => {
+      if (error) reject(error);
+      resolve(user.name);
+    });
+  });
+}
+
 function setActivity() {
   new Activities({
     username: 'Admin',
-    activity: `Admin added ${user}`,
+    activity: activity,
     date: new Date()
   }).save();
 }
