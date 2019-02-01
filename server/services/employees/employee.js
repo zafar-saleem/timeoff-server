@@ -49,10 +49,6 @@ function fetchDetails(request, response) {
 }
 
 function updateDetails(request, response) {
-  if (request.body.admin.access !== 'Admin') {
-    return response.json(httpResponses.onClientAdminFail);
-  }
-
   utils.checkUserControl(request.body.admin.id)
     .then(admin => {
       let query = {
@@ -65,17 +61,19 @@ function updateDetails(request, response) {
 
       let record = {
         name: request.body.name,
-        role: request.body.role,
         position: request.body.position,
         username: request.body.username,
         password: request.body.password
       };
 
-      user = record.username;
+      if (request.body.admin.access === 'Admin') {
+        record['role'] = request.body.role;
+      }
 
       Employees.findOneAndUpdate(query, record, { new: true }, (error, doc) => {
         if (error) response.json(error);
 
+        user = record.username;
         activity = `${admin} updated their details.`,
         setActivity();
         user = null;
