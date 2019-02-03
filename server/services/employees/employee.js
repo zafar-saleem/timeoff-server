@@ -32,7 +32,6 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 let user, activity;
 
 function fetchDetails(request, response) {
-  console.log(request.query);
   const employeeID = request.query.employeeID;
 
   Employees.findOne({ _id: employeeID }, (error, doc) => {
@@ -40,9 +39,7 @@ function fetchDetails(request, response) {
 
     const employee = doc.toObject();
 
-    delete employee.password; 
-
-    console.log(employee);
+    delete employee.password;
 
     response.json(employee);
   });

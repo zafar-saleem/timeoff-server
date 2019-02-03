@@ -75,7 +75,7 @@ function comparePassword(user) {
       setActivity();
 
       if (user != null) {
-        responseToken = { success: true, role: user.role, id: user._id, token: 'JWT ' + token };
+        responseToken = { success: true, name: user.name, role: user.role, id: user._id, token: 'JWT ' + token };
       } 
 
       return http.json(responseToken);
