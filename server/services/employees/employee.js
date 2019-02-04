@@ -84,10 +84,15 @@ function updateDetails(request, response) {
 }
 
 function setVacations(request, response) {
-  Vacations.findOne({
-    start: request.body.start,
-    employeeID: request.body.employeeID
-  }, (error, doc) => {
+  const { start, end, employeeID } = request.body;
+
+  const condition = {
+    start: { $gte: start },
+    end: { $lte: end },
+    employeeID: employeeID
+  };
+
+  Vacations.findOne(condition, (error, doc) => {
     if (error) return response.json(error);
     if (doc) return response.json(httpResponses.onVacationExist);
 
