@@ -13,7 +13,8 @@ const VacationsSchema = new mongoose.Schema({
   end: {
     type: Date,
     required: true
-  }
+  },
+  expire: Boolean
 }, { timestamps: true });
 
 module.exports = mongoose.model('Vacations', VacationsSchema);

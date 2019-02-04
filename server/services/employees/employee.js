@@ -116,19 +116,19 @@ function fetchVacations(request, response) {
     .lean()
     .exec((error, docs) => {
       if (error) return response.json(error);
-      formatDates(docs)
+      checkExpiredVacations(docs)
         .then(item => {
-          return response.json(docs);
-        });
+          formatDates(item)
+            .then(dates => {
+              return response.json(docs);
+            });
+        })
   });
 }
 
 function formatDates(vacations) {
   return new Promise((resolve, reject) => {
     let dates = vacations.map(item => {
-      item['startDate'] = null;
-      item['endDate'] = null;
-
       const startDate = new Date(item.start);
 
       const startDay = startDate.getDate();
@@ -148,6 +148,26 @@ function formatDates(vacations) {
     });
 
     resolve(dates);
+  });
+}
+
+function checkExpiredVacations(dates) {
+  let index = 0;
+  return new Promise((resolve, reject) => {
+    const today = new Date();
+    let date = dates.map(date => {
+      index++;
+      if (date.start < today) {
+        date['expire'] = true;
+        return date
+      }
+
+      return date;
+    });
+
+    if (index === dates.length) {
+      resolve(date);
+    }
   });
 }
 
