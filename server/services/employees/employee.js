@@ -85,7 +85,8 @@ function updateDetails(request, response) {
 
 function setVacations(request, response) {
   Vacations.findOne({
-    start: request.body.start
+    start: request.body.start,
+    employeeID: request.body.employeeID
   }, (error, doc) => {
     if (error) return response.json(error);
     if (doc) return response.json(httpResponses.onVacationExist);
@@ -110,11 +111,15 @@ function setVacations(request, response) {
 }
 
 function fetchVacations(request, response) {
-  Vacations.find({ employeeID: request.query.id }).lean().exec((error, docs) => {
-    if (error) return response.json(error);
-    formatDates(docs).then(item => {
-      return response.json(docs);
-    });
+  Vacations.find({ employeeID: request.query.id })
+    .sort('-createdAt')
+    .lean()
+    .exec((error, docs) => {
+      if (error) return response.json(error);
+      formatDates(docs)
+        .then(item => {
+          return response.json(docs);
+        });
   });
 }
 
@@ -136,8 +141,8 @@ function formatDates(vacations) {
       const endMonth = months[endDate.getMonth()];
       const endYear = endDate.getFullYear();
 
-      item['start'] = startMonth + ' ' + startDay + ', ' + startYear;
-      item['end'] = endMonth + ' ' + endDay + ', ' + endYear;
+      item['start'] = `${startMonth} ${startDay}, ${startYear}`;
+      item['end'] = `${endMonth} ${endDay}, ${endYear}`;
 
       return item;
     });
