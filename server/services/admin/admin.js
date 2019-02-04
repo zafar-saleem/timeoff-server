@@ -106,6 +106,27 @@ function deactivate(request, response) {
     });
 }
 
+function search(request, response) {
+  if (request.body.access !== 'Admin') {
+    return response.json(httpResponses.clientAdminFailed);
+  }
+
+  utils.checkUserControl(request.body.id)
+    .then(admin => {
+      let search = request.body.search;
+      let regex = new RegExp(search,'i');
+
+      Employees.find({ $or: [ { username: regex }] }, (error, docs) => {
+        if (error) return response.json(error);
+        return response.json(docs)
+      });
+    })
+    .catch(error => {
+      console.log(error);
+      return response.json(httpResponses.onServerAdminFail);
+    });
+}
+
 function getUser(id) {
   return new Promise((resolve, reject) => {
     Employees.findOne({ _id: id }, (error, user) => {
@@ -125,5 +146,6 @@ function setActivity() {
 module.exports = {
   save: save,
   fetchEmployees: fetchEmployees,
-  deactivate: deactivate
+  deactivate: deactivate,
+  search: search
 };
