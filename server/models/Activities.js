@@ -9,10 +9,7 @@ const ActivitiesSchema = new mongoose.Schema({
   activity: {
     type: String,
     required: true
-  },
-  date: {
-    type: Date
   }
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('Activities', ActivitiesSchema);

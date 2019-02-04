@@ -88,8 +88,7 @@ function comparePassword(user) {
 function setActivity() {
   new Activities({
     username: userUsername,
-    activity: `${userUsername} logged in`,
-    date: new Date()
+    activity: `${userUsername} logged in`
   }).save();
 
   userUsername = '';

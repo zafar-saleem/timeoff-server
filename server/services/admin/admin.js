@@ -118,8 +118,7 @@ function getUser(id) {
 function setActivity() {
   new Activities({
     username: 'Admin',
-    activity: activity,
-    date: new Date()
+    activity: activity
   }).save();
 }
 
