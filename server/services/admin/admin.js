@@ -28,7 +28,7 @@ const httpResponses = {
 
 function save(request, response) {
   const { name, role, position, username, password } = request.body;
-  user = username
+  user = username;
   
   if (request.body.admin.access === 'Admin') {
     utils.checkUserControl(request.body.admin.id)
@@ -38,7 +38,9 @@ function save(request, response) {
         employee.save(error => {
           if (error) response.json(error);
 
-          setActivity();
+          activity = `Admin created ${request.body.name}`;
+
+          utils.setActivity(request.body.name, activity);
 
           response.json(httpResponses.employeeAddedSuccessfully);
         });
@@ -83,16 +85,16 @@ function deactivate(request, response) {
 
   utils.checkUserControl(request.body.admin.id)
     .then(admin => {
-      Employees.update({ _id: request.body.id }, {
+      Employees.updateOne({ _id: request.body.id }, {
         active: false
       }, (error, doc) => {
         if (error) response.json(error);
 
-        getUser(request.body.id)
+        utils.getUser(request.body.id)
           .then(user => {
-            user = user.name;
             activity = `Admin deactivated ${user}`;
-            setActivity();
+
+            utils.setActivity(user, activity);
 
             response.json({ success: true, message: 'User Deactivated' });
           })
@@ -122,25 +124,8 @@ function search(request, response) {
       });
     })
     .catch(error => {
-      console.log(error);
       return response.json(httpResponses.onServerAdminFail);
     });
-}
-
-function getUser(id) {
-  return new Promise((resolve, reject) => {
-    Employees.findOne({ _id: id }, (error, user) => {
-      if (error) reject(error);
-      resolve(user.name);
-    });
-  });
-}
-
-function setActivity() {
-  new Activities({
-    username: 'Admin',
-    activity: activity
-  }).save();
 }
 
 module.exports = {
