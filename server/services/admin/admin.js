@@ -128,9 +128,30 @@ function search(request, response) {
     });
 }
 
+function profile(request, response) {
+  if (request.query.access !== 'Admin') {
+    return response.json(httpResponses.clientAdminFailed);
+  }
+
+  utils.checkUserControl(request.query.id)
+    .then(admin => {
+      User.findOne({ _id: request.query.id })
+        .lean()
+        .exec((error, doc) => {
+          if (error) return response.json(error);
+          delete doc.password;
+          return response.json(doc);
+      })
+    })
+    .catch(error => {
+      return response.json(httpResponses.onServerAdminFail);
+    });
+}
+
 module.exports = {
   save: save,
   fetchEmployees: fetchEmployees,
   deactivate: deactivate,
-  search: search
+  search: search,
+  profile: profile
 };
