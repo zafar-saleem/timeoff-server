@@ -1,4 +1,6 @@
 const User = require('../models/User');
+const Activities = require('../models/Activities');
+const Employees = require('../models/Employees');
 
 function checkUserControl(id) {
   return new Promise((resolve, reject) => {
@@ -13,6 +15,24 @@ function checkUserControl(id) {
   });
 }
 
+function getUser(id) {
+  return new Promise((resolve, reject) => {
+    Employees.findOne({ _id: id }, (error, user) => {
+      if (error) reject(error);
+      resolve(user.name);
+    });
+  });
+}
+
+function setActivity(name, activity) {
+  new Activities({
+    username: name,
+    activity: activity
+  }).save();
+}
+
 module.exports = {
-  checkUserControl: checkUserControl
+  checkUserControl: checkUserControl,
+  setActivity: setActivity,
+  getUser: getUser
 };
