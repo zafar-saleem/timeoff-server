@@ -46,8 +46,9 @@ function fetchDetails(request, response) {
 }
 
 function updateDetails(request, response) {
-  utils.checkUserControl(request.body.admin.id)
-    .then(admin => {
+  let activityUser = '';
+  utils.getUser(request.body._id)
+    .then(user => {
       let query = {
         _id: request.body._id
       };
@@ -65,16 +66,15 @@ function updateDetails(request, response) {
 
       if (request.body.admin.access === 'Admin') {
         record['role'] = request.body.role;
+        activityUser = 'Admin';
+      } else {
+        activityUser = user;
       }
 
       Employees.findOneAndUpdate(query, record, { new: true }, (error, doc) => {
         if (error) response.json(error);
-
-        user = record.username;
-        activity = `${admin} updated their details.`,
-        setActivity();
-        user = null;
-
+        activity = `${activityUser} updated ${record.username}'s details.`;
+        utils.setActivity(activityUser, activity);
         response.json(httpResponses.onUpdateSuccess);
       });
     })
@@ -99,11 +99,10 @@ function setVacations(request, response) {
     new Vacations(request.body).save((error, doc) => {
       if (error) return response.json(error);
 
-      getUser(request.body.employeeID)
+      utils.getUser(request.body.employeeID)
         .then(name => {
-          activity = `${name} set vacations`,
-          user = name;
-          setActivity();
+          activity = `${name} set vacations`;
+          utils.setActivity(name, activity);
 
           user = null;
         }).catch(err => {
@@ -183,13 +182,10 @@ function deleteVacation(request, response) {
     Vacations.find({ employeeID: request.body.employeeID }, (error, docs) => {
       if (error) return response.json(error);
 
-      getUser(request.body.employeeID)
+      utils.getUser(request.body.employeeID)
         .then(name => {
-          activity = `${name} deleted vacation`,
-          user = name;
-          setActivity();
-
-          user = null;
+          activity = `${name} deleted vacation`;
+          utils.setActivity(name, activity);
         }).catch(err => {
           return response.json(err);
         });
@@ -197,22 +193,6 @@ function deleteVacation(request, response) {
       return response.json(docs);
     });
   });
-}
-
-function getUser(id) {
-  return new Promise((resolve, reject) => {
-    Employees.findOne({ _id: id }, (error, user) => {
-      if (error) reject(error);
-      resolve(user.name);
-    });
-  });
-}
-
-function setActivity() {
-  new Activities({
-    username: user,
-    activity: activity
-  }).save();
 }
 
 module.exports = {
