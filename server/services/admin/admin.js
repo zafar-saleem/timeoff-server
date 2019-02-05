@@ -36,19 +36,19 @@ function save(request, response) {
         let employee = new Employees({ name, role, position, username, password, status: false, active: true });
 
         employee.save(error => {
-          if (error) response.json(error);
+          if (error) return response.json(error);
 
           activity = `Admin created ${request.body.name}`;
 
           utils.setActivity(request.body.name, activity);
 
-          response.json(httpResponses.employeeAddedSuccessfully);
+          return response.json(httpResponses.employeeAddedSuccessfully);
         });
       }).catch(error => {
-        response.json(error);
+        return response.json(error);
       });
   } else {
-    response.json(httpResponses.clientAdminFailed);
+    return response.json(httpResponses.clientAdminFailed);
   }
 }
 
