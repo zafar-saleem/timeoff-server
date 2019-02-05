@@ -67,19 +67,20 @@ function updateDetails(request, response) {
       if (request.body.admin.access === 'Admin') {
         record['role'] = request.body.role;
         activityUser = 'Admin';
+        activity = `${activityUser} updated ${record.username}'s details.`;  
       } else {
         activityUser = user;
+        activity = `${activityUser} updated their details.`;
       }
 
       Employees.findOneAndUpdate(query, record, { new: true }, (error, doc) => {
-        if (error) response.json(error);
-        activity = `${activityUser} updated ${record.username}'s details.`;
+        if (error) return response.json(error);
         utils.setActivity(activityUser, activity);
-        response.json(httpResponses.onUpdateSuccess);
+        return response.json(httpResponses.onUpdateSuccess);
       });
     })
     .catch(error => {
-      response.json(error);
+      return response.json(error);
     });
 }
 
