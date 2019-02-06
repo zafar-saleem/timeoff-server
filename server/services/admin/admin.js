@@ -9,7 +9,7 @@ const Activities = require('../../models/Activities');
 
 const utils = require('../../utils');
 
-let user, activity;
+let user, activity, username, role, password;
 
 const httpResponses = {
   clientAdminFailed: {
@@ -23,6 +23,22 @@ const httpResponses = {
   employeeAddedSuccessfully: {
     success: true,
     message: 'New employee added successfully'
+  },
+  onProfileUpdateSuccess: {
+    success: true,
+    message: 'Your profile updates successfully.'
+  },
+  onProfileUpdatePasswordEmpty: {
+    success: false,
+    message: 'Please enter old or new password.'
+  },
+  onProfileUpdateUsernameEmpty: {
+    success: false,
+    message: 'Please enter username.'
+  },
+  onProfileUpdatePasswordUserEmpty: {
+    success: false,
+    message: 'Please enter username and old or new password.'
   }
 }
 
@@ -148,10 +164,55 @@ function profile(request, response) {
     });
 }
 
+function updateProfile(request, response) {
+  // const { username, role, password } = request.body;
+  username = request.body.username;
+  role = request.body.role;
+  password = request.body.password;
+
+  if (request.body.access !== 'Admin') {
+    return response.json(httpResponses.clientAdminFailed);
+  }
+
+  if (performUpdateProfileChecks() !== true) {
+    return response.json(performUpdateProfileChecks());
+  }
+
+  utils.checkUserControl(request.body.id)
+    .then(admin => {
+      User.findOneAndUpdate({ _id: request.body.id }, {username, role, password})
+        .lean()
+        .exec((error, doc) => {
+          if (error) return response.json(error);
+          return response.json(httpResponses.onProfileUpdateSuccess);
+      });
+    })
+    .catch(error => {
+      return response.json(httpResponses.onServerAdminFail);
+    });
+}
+
+function performUpdateProfileChecks() {
+  if (password === '' && username === '') {
+    return httpResponses.onProfileUpdatePasswordUserEmpty;
+  }
+
+  if (password === '') {
+    return httpResponses.onProfileUpdatePasswordEmpty;
+  }
+
+  if (username === '') {
+    return httpResponses.onProfileUpdateUsernameEmpty;
+  }
+
+  return true;
+}
+
 module.exports = {
   save: save,
   fetchEmployees: fetchEmployees,
   deactivate: deactivate,
   search: search,
-  profile: profile
+  profile: profile,
+  updateProfile: updateProfile
 };

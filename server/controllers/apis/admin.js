@@ -12,5 +12,6 @@ router.get('/list', passport.authenticate('jwt', { session: false }), adminServi
 router.post('/deactivate', passport.authenticate('jwt', { session: false }), adminService.deactivate);
 router.post('/search', passport.authenticate('jwt', { session: false }), adminService.search);
 router.get('/profile', passport.authenticate('jwt', { session: false }), adminService.profile);
+router.put('/update', passport.authenticate('jwt', { session: false }), adminService.updateProfile);
 
 module.exports = router;
