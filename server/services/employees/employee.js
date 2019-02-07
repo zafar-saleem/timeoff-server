@@ -24,6 +24,10 @@ const httpResponses = {
   onVacationExist: {
     success: false,
     message: 'You already setup vacation on this date'
+  },
+  onVacationDelete: {
+    success: true,
+    message: 'Vacation is deleted successfully.'
   }
 };
 
@@ -180,7 +184,7 @@ function deleteVacation(request, response) {
   Vacations.findOneAndDelete({ _id: request.body.id }, (error, docs) => {
     if (error) return response.json(error);
 
-    Vacations.find({ employeeID: request.body.employeeID }, (error, docs) => {
+    Vacations.find({ employeeID: request.body.employeeID }, (error, doc) => {
       if (error) return response.json(error);
 
       utils.getUser(request.body.employeeID)
@@ -191,7 +195,7 @@ function deleteVacation(request, response) {
           return response.json(err);
         });
 
-      return response.json(docs);
+      return response.json(httpResponses.onVacationDelete);
     });
   });
 }
