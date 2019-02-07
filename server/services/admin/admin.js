@@ -72,25 +72,35 @@ function fetchEmployees(request, response) {
   if (request.query.access !== 'Admin') {
     return response.json(httpResponses.clientAdminFailed);
   }
+  
+  let sortBy;
+
+  if (request.query.order === 'asc') {
+    sortBy = `-${request.query.sortBy}`;
+  } else {
+    sortBy = request.query.sortBy;
+  }
 
   utils.checkUserControl(request.query.id)
     .then(user => {
-      Employees.find({}, (error, docs) => {
-        if (error) response.json(error);
+      Employees.find({}, null)
+        .sort(sortBy)
+        .exec((error, docs) => {
+          if (error) return response.json(error);
 
-        let updatedDocument = docs.map(doc => {
-          let documentToObject = doc.toObject();
+          let updatedDocument = docs.map(doc => {
+            let documentToObject = doc.toObject();
 
-          delete documentToObject.password;
+            delete documentToObject.password;
 
-          return documentToObject;
-        });
+            return documentToObject;
+          });
 
-        response.json(updatedDocument);
+          return response.json(updatedDocument);
       });
     })
     .catch(error => {
-      response.json(httpResponses.onServerAdminFail);
+      return response.json(httpResponses.onServerAdminFail);
     });
 }
 
