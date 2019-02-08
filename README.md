@@ -23,4 +23,4 @@ The technology stack used is below
 * Passport
 
 ## Client side of this project
-The client side of this project could be found [here](https://github.com/zafar-saleem/timeoff-app/blob/master/README.md)
+The client side of this project could be found [here](https://github.com/zafar-saleem/timeoff-app)
