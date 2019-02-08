@@ -19,7 +19,7 @@ Very simple and easy to scale architecture. All it needs is implementation of ne
 The technology stack used is below
 * Node.js
 * Express.js
-* MonogoDB
+* MongoDB
 * Passport
 
 ## Client side of this project
