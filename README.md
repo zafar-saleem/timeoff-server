@@ -24,3 +24,6 @@ The technology stack used is below
 
 ## Client side of this project
 The client side of this project could be found [here](https://github.com/zafar-saleem/timeoff-app)
+
+# Contact
+timeoff.vacations@gmail.com
