@@ -9,7 +9,7 @@ const Activities = require('../../models/Activities');
 
 const utils = require('../../utils');
 
-let user, activity, username, role, password;
+let user, activity, usernameCheck, role, passwordCheck;
 
 const httpResponses = {
   clientAdminFailed: {
@@ -30,7 +30,7 @@ const httpResponses = {
   },
   onProfileUpdatePasswordEmpty: {
     success: false,
-    message: 'Please enter old or new password.'
+    message: 'Please enter password.'
   },
   onProfileUpdateUsernameEmpty: {
     success: false,
@@ -45,6 +45,13 @@ const httpResponses = {
 function save(request, response) {
   const { name, role, position, username, password } = request.body;
   user = username;
+  usernameCheck = username;
+  passwordCheck = password;
+
+  if (performUpdateProfileChecks() !== true) {
+    console.log(password);
+    return response.json(performUpdateProfileChecks());
+  }
   
   if (request.body.admin.access === 'Admin') {
     utils.checkUserControl(request.body.admin.id)
@@ -203,15 +210,15 @@ function updateProfile(request, response) {
 }
 
 function performUpdateProfileChecks() {
-  if (password === '' && username === '') {
-    return httpResponses.onProfileUpdatePasswordUserEmpty;
+  if (passwordCheck === '' && usernameCheck === '') {
+    return httpResponses.onProfileUpdatePasswordCheckUserEmpty;
   }
 
-  if (password === '') {
+  if (passwordCheck === '') {
     return httpResponses.onProfileUpdatePasswordEmpty;
   }
 
-  if (username === '') {
+  if (usernameCheck === '') {
     return httpResponses.onProfileUpdateUsernameEmpty;
   }
 
