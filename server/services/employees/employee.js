@@ -3,33 +3,7 @@ const Activities = require('../../models/Activities');
 const Vacations = require('../../models/Vacations');
 
 const utils = require('../../utils');
-
-const httpResponses = {
-  onUpdateSuccess: {
-    success: true,
-    message: 'Details updated successfully'
-  },
-  onClientAdminFail: {
-    success: false,
-    message: 'Client is not admin'
-  },
-  onServerAdminFail: {
-    success: false,
-    message: 'This area is for admin only'
-  },
-  onSetVacationSuccess: {
-    success: true,
-    message: 'Your vacations set successfully.'
-  },
-  onVacationExist: {
-    success: false,
-    message: 'You already setup vacation on this date'
-  },
-  onVacationDelete: {
-    success: true,
-    message: 'Vacation is deleted successfully.'
-  }
-};
+const httpResponses = require('./');
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 

@@ -8,39 +8,9 @@ const User = require('../../models/User');
 const Activities = require('../../models/Activities');
 
 const utils = require('../../utils');
+const httpResponses = require('./');
 
 let user, activity, usernameCheck, role, passwordCheck;
-
-const httpResponses = {
-  clientAdminFailed: {
-    success: false,
-    message: 'Tried to access admin area from the client side. Only Admin can access this page'
-  },
-  onServerAdminFail: {
-    success: false,
-    message: 'This are is for admin users only'
-  },
-  employeeAddedSuccessfully: {
-    success: true,
-    message: 'New employee added successfully'
-  },
-  onProfileUpdateSuccess: {
-    success: true,
-    message: 'Your profile updates successfully.'
-  },
-  onProfileUpdatePasswordEmpty: {
-    success: false,
-    message: 'Please enter password.'
-  },
-  onProfileUpdateUsernameEmpty: {
-    success: false,
-    message: 'Please enter username.'
-  },
-  onProfileUpdatePasswordUserEmpty: {
-    success: false,
-    message: 'Please enter username and old or new password.'
-  }
-}
 
 function save(request, response) {
   const { name, role, position, username, password } = request.body;
