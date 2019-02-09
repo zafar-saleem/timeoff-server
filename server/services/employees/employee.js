@@ -57,16 +57,16 @@ function updateDetails(request, response) {
         _id: request.body._id
       };
 
-      if (request.body.password === '') {
-        return response.json({ success: false, message: 'Please enter new or old password' });
-      }
-
       let record = {
         name: request.body.name,
         position: request.body.position,
         username: request.body.username,
         password: request.body.password
       };
+
+      if (request.body.password === '') {
+        delete record.password;
+      }
 
       if (request.body.admin.access === 'Admin') {
         record['role'] = request.body.role;
