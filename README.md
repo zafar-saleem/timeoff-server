@@ -25,5 +25,8 @@ The technology stack used is below
 ## Client side of this project
 The client side of this project could be found [here](https://github.com/zafar-saleem/timeoff-app)
 
+## Local testing
+To test this project locally, use `nodemon` package. Run `nodemon index.js` in timeoff-server folder which will run its server. Then use the client side and run its server using `npm start` command and visit the url mentioned in terminal of the client side.
+
 # Contact
 timeoff.vacations@gmail.com
