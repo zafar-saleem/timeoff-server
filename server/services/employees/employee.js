@@ -33,6 +33,7 @@ function updateDetails(request, response) {
 
       let record = {
         name: request.body.name,
+        email: request.body.email,
         position: request.body.position,
         username: request.body.username,
         password: request.body.password
