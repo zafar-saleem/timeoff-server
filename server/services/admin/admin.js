@@ -13,12 +13,12 @@ const httpResponses = require('./');
 let user, activity, usernameCheck, role, passwordCheck;
 
 function save(request, response) {
-  const { name, role, position, username, password } = request.body;
+  const { name, role, position, username, password, email } = request.body;
   user = username;
   usernameCheck = username;
   passwordCheck = password;
 
-  if (request.body.admin.access === 'Admin') {
+  if (request.body.admin.access !== 'Admin') {
     return response.json(httpResponses.clientAdminFailed);
   }
 
@@ -28,7 +28,7 @@ function save(request, response) {
   
   utils.checkUserControl(request.body.admin.id)
     .then(user => {
-      let employee = new Employees({ name, role, position, username, password, status: false, active: true });
+      let employee = new Employees({ name, email, role, position, username, password, status: false, active: true });
 
       employee.save(error => {
         if (error) return response.json(error);

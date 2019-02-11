@@ -7,6 +7,11 @@ const EmployeesSchema = new mongoose.Schema({
     lowercase: true,
     required: true
   },
+  email: {
+    type: String,
+    lowercase: true,
+    required: true
+  },
   position: {
     type: String,
     required: true
