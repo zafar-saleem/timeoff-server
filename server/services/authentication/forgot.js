@@ -1,18 +1,19 @@
 const Employees = require('../../models/Employees');
+const httpResponses = require('./');
 
 function forgotPassword(request, response) {
   const { password, username } = request.body;
 
   if (!password && !username) {
-    return response.json({ success: false, message: 'Please enter username and password.' });
+    return response.json(httpResponses.onUserPassEmpty);
   }
 
   if (!password) {
-    return response.json({ success: false, message: 'Please enter new password.' });
+    return response.json(httpResponses.onPassEmpty);
   }
 
   if (!username) {
-    return response.json({ success: false, message: 'Please enter your valid username.' });
+    return response.json(httpResponses.onUsernameEmpty);
   }
 
   Employees.findOne({ username: username })
@@ -21,7 +22,7 @@ function forgotPassword(request, response) {
       if (error) return response.json({success: false, message: error});
       Employees.updateOne({ username: username }, { password: password }, (err, emp) => {
         if (err) return response.json(err);
-        return response.json({ success: true, message: 'Password updated successfully.' });
+        return response.json(httpResponses.onPasswordUpdateSuccess);
       });
     });
 }
