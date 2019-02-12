@@ -2,6 +2,7 @@
 
 const registerController = require('../../controllers/apis/register');
 const loginController = require('../../controllers/apis/login');
+const forgotController = require('../../controllers/apis/forgot');
 const logoutController = require('../../controllers/apis/logout');
 const dashboardController = require('../../controllers/apis/dashboard');
 
@@ -15,6 +16,7 @@ let router = express.Router();
 
 router.use('/register', registerController);
 router.use('/login', loginController);
+router.use('/forgot', forgotController);
 router.use('/logout', logoutController);
 router.use('/dashboard', dashboardController);
 

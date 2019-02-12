@@ -151,7 +151,15 @@ function profile(request, response) {
 }
 
 function updateProfile(request, response) {
-  const { username, email, role, password } = request.body;
+  const adminProfile = {
+    username: request.body.username,
+    email: request.body.email,
+    role: request.body.role,
+    password: request.body.password
+  };
+
+  usernameCheck = request.body.username;
+  passwordCheck = request.body.password;
 
   if (request.body.access !== 'Admin') {
     return response.json(httpResponses.clientAdminFailed);
@@ -161,9 +169,13 @@ function updateProfile(request, response) {
     return response.json(performUpdateProfileChecks());
   }
 
+  if (request.body.password === '') {
+    // delete adminProfile.password;
+  }
+
   utils.checkUserControl(request.body.id)
     .then(admin => {
-      User.findOneAndUpdate({ _id: request.body.id }, { username, email, role, password })
+      User.findOneAndUpdate({ _id: request.body.id }, adminProfile)
         .lean()
         .exec((error, doc) => {
           if (error) return response.json(error);
