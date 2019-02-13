@@ -28,5 +28,12 @@ The client side of this project could be found [here](https://github.com/zafar-s
 ## Local testing
 To test this project locally, use `nodemon` package. Run `nodemon index.js` in timeoff-server folder which will run its server. Then use the client side and run its server using `npm start` command and visit the url mentioned in terminal of the client side.
 
+## Database
+This project requires setting up your own database on your machine. Please follow below links.
+(Windows)[https://docs.mongodb.com/v3.2/tutorial/install-mongodb-on-windows/]
+(MacOS)[https://www.code2bits.com/how-to-install-mongodb-on-macos-using-homebrew/] Make sure that homebrew is already installed on your machine.
+
+Once you have that setup, make one admin account in Users collection, with properties username, password, email and role(which should be set to admin).
+
 # Contact
 timeoff.vacations@gmail.com
