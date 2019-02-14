@@ -1,7 +1,9 @@
 <p align="center">
   <img src="screenshots/logo.png" />
-</p>90
+</p>
+
 **Note: To use this project with built in user interface then use its client side implementation which could be found [here](https://github.com/zafar-saleem/timeoff-app)
+
 
 TimeOff is an application that allows companies and organisations to allow their employees to set vacations before they take their time off. TimeOff is an easy to use vacation setter with just few clicks.
 
