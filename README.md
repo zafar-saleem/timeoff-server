@@ -39,4 +39,4 @@ This project requires setting up your own database on your machine. Please follo
 Once you have that setup, make one admin account in Users collection, with properties username, password, email and role(which should be set to admin).
 
 # Contact
-timeoff.vacations@gmail.com
+timeoff.sendmail@gmail.com
