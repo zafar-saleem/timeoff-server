@@ -38,7 +38,7 @@ This project requires setting up your own database on your machine. Please follo
 
 Once you have that setup, make one admin account in Users collection, with properties username, password, email and role(which should be set to admin).
 
-To create an admin user, go to http://localhost:PORTNUMBER/register and enter admin's details. Click register. Then go to mongodb CLI. use timoff database and use below query to update user's role to Admin.
+To create an admin user, go to `http://localhost:PORTNUMBER/register` and enter admin's details. Click register. Then go to mongodb CLI. use timoff database and use below query to update user's role to Admin.
 
 `db.users.update({"username": "root"}, {$set:{"role":"Admin"}})`
 
