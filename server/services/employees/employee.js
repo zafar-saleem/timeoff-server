@@ -43,7 +43,7 @@ function updateDetails(request, response) {
         delete record.password;
       }
 
-      if (request.body.admin.access === 'Admin') {
+      if (request.body.admin.access.toLowerCase() === 'admin') {
         record['role'] = request.body.role;
         activityUser = 'Admin';
         activity = `${activityUser} updated ${record.username}'s details.`;  
