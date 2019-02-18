@@ -2,6 +2,8 @@
   <img src="screenshots/logo.png" />
 </p>
 
+[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Your%20employees%20want%20to%20set%20vacation%20before%20taking%20their%20time%20off?%20Here%20is%20an%20open%20source%20project%20that%20can%20help%20you%20to%20set%20their%20vacations&url=https://github.com/zafar-saleem/timeoff-server)
+
 **Note: To use this project with built in user interface then use its client side implementation which could be found [here](https://github.com/zafar-saleem/timeoff-app)
 
 
@@ -38,7 +40,7 @@ This project requires setting up your own database on your machine. Please follo
 
 Once you have that setup, make one admin account in Users collection, with properties username, password, email and role(which should be set to admin).
 
-To create an admin user, go to http://localhost:PORTNUMBER/register and enter admin's details. Click register. Then go to mongodb CLI. use timoff database and use below query to update user's role to Admin.
+To create an admin user, go to `http://localhost:PORTNUMBER/register` and enter admin's details. Click register. Then go to mongodb CLI. use timoff database and use below query to update user's role to Admin.
 
 `db.users.update({"username": "root"}, {$set:{"role":"Admin"}})`
 
