@@ -5,20 +5,20 @@ const Activities = require('../../models/Activities');
 
 const utils = require('../../utils');
 
-function fetchOnlineEmployees(request, response) {
-  const id = request.query.id;
+// function fetchOnlineEmployees(request, response) {
+//   const id = request.query.id;
 
-  utils.checkUserControl(id)
-    .then(user => {
-      Employees.find({ status: true }, (error, docs) => {
-        if (error) return response.json(error);
-        return response.json(docs.length);
-      });
-    })
-    .catch(error => {
-      response.json(error);
-    });
-}
+//   utils.checkUserControl(id)
+//     .then(user => {
+//       Employees.find({ status: true }, (error, docs) => {
+//         if (error) return response.json(error);
+//         return response.json(docs.length);
+//       });
+//     })
+//     .catch(error => {
+//       response.json(error);
+//     });
+// }
 
 function fetchActivities(request, response) {
   const id = request.query.id;
@@ -38,6 +38,6 @@ function fetchActivities(request, response) {
 }
 
 module.exports = {
-  fetchOnlineEmployees: fetchOnlineEmployees,
+  // fetchOnlineEmployees: fetchOnlineEmployees,
   fetchActivities: fetchActivities
 }
