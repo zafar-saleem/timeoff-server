@@ -12,35 +12,35 @@ const httpResponses = require('./');
 
 let user, activity, usernameCheck, role, passwordCheck;
 
-function deactivate(request, response) {
-  if (request.body.admin.access !== 'Admin') {
-    return response.json(httpResponses.clientAdminFailed);
-  }
+// function deactivate(request, response) {
+//   if (request.body.admin.access !== 'Admin') {
+//     return response.json(httpResponses.clientAdminFailed);
+//   }
 
-  utils.checkUserControl(request.body.admin.id)
-    .then(admin => {
-      Employees.updateOne({ _id: request.body.id }, {
-        active: false
-      }, (error, doc) => {
-        if (error) response.json(error);
+//   utils.checkUserControl(request.body.admin.id)
+//     .then(admin => {
+//       Employees.updateOne({ _id: request.body.id }, {
+//         active: false
+//       }, (error, doc) => {
+//         if (error) response.json(error);
 
-        utils.getUser(request.body.id)
-          .then(user => {
-            activity = `Admin deactivated ${user}`;
+//         utils.getUser(request.body.id)
+//           .then(user => {
+//             activity = `Admin deactivated ${user}`;
 
-            utils.setActivity(user, activity);
+//             utils.setActivity(user, activity);
 
-            response.json({ success: true, message: 'User Deactivated' });
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      });
-    })
-    .catch(error => {
-      response.json(httpResponses.onServerAdminFail);
-    });
-}
+//             response.json({ success: true, message: 'User Deactivated' });
+//           })
+//           .catch(error => {
+//             console.log(error);
+//           });
+//       });
+//     })
+//     .catch(error => {
+//       response.json(httpResponses.onServerAdminFail);
+//     });
+// }
 
 function search(request, response) {
   if (request.body.access !== 'Admin') {
@@ -136,7 +136,7 @@ function performUpdateProfileChecks() {
 }
 
 module.exports = {
-  deactivate: deactivate,
+  // deactivate: deactivate,
   search: search,
   profile: profile,
   updateProfile: updateProfile
