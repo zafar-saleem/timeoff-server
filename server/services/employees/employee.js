@@ -9,19 +9,19 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 
 let user, activity;
 
-function fetchDetails(request, response) {
-  const employeeID = request.query.employeeID;
+// function fetchDetails(request, response) {
+//   const employeeID = request.query.employeeID;
 
-  Employees.findOne({ _id: employeeID }, (error, doc) => {
-    if (error) response.json(error);
+//   Employees.findOne({ _id: employeeID }, (error, doc) => {
+//     if (error) response.json(error);
 
-    const employee = doc.toObject();
+//     const employee = doc.toObject();
 
-    delete employee.password;
+//     delete employee.password;
 
-    response.json(employee);
-  });
-}
+//     response.json(employee);
+//   });
+// }
 
 function updateDetails(request, response) {
   let activityUser = '';
@@ -176,7 +176,7 @@ function deleteVacation(request, response) {
 }
 
 module.exports = {
-  fetchDetails: fetchDetails,
+  // fetchDetails: fetchDetails,
   updateDetails: updateDetails,
   setVacations: setVacations,
   fetchVacations: fetchVacations,
