@@ -12,7 +12,7 @@ function save(request, response) {
   usernameCheck = username;
   passwordCheck = password;
 
-  if (request.body.admin.access !== 'Admin') {
+  if (request.body.admin.access.toLowerCase() !== 'admin') {
     return response.json(httpResponses.clientAdminFailed);
   }
 

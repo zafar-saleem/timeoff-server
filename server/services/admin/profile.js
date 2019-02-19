@@ -6,7 +6,7 @@ const httpResponses = require('./');
 let usernameCheck, passwordCheck;
 
 function get(request, response) {
-  if (request.query.access !== 'Admin') {
+  if (request.query.access.toLowerCase() !== 'admin') {
     return response.json(httpResponses.clientAdminFailed);
   }
 

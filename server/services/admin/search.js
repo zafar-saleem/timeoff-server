@@ -4,7 +4,7 @@ const utils = require('../../utils');
 const httpResponses = require('./');
 
 function search(request, response) {
-  if (request.body.access !== 'Admin') {
+  if (request.body.access.toLowerCase() !== 'admin') {
     return response.json(httpResponses.clientAdminFailed);
   }
 

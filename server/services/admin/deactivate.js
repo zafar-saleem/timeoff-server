@@ -4,7 +4,7 @@ const utils = require('../../utils');
 const httpResponses = require('./');
 
 function deactivate(request, response) {
-  if (request.body.admin.access !== 'Admin') {
+  if (request.body.admin.access.toLowerCase() !== 'admin') {
     return response.json(httpResponses.clientAdminFailed);
   }
 
