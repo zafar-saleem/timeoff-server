@@ -12,56 +12,6 @@ const httpResponses = require('./');
 
 let user, activity, usernameCheck, role, passwordCheck;
 
-// function deactivate(request, response) {
-//   if (request.body.admin.access !== 'Admin') {
-//     return response.json(httpResponses.clientAdminFailed);
-//   }
-
-//   utils.checkUserControl(request.body.admin.id)
-//     .then(admin => {
-//       Employees.updateOne({ _id: request.body.id }, {
-//         active: false
-//       }, (error, doc) => {
-//         if (error) response.json(error);
-
-//         utils.getUser(request.body.id)
-//           .then(user => {
-//             activity = `Admin deactivated ${user}`;
-
-//             utils.setActivity(user, activity);
-
-//             response.json({ success: true, message: 'User Deactivated' });
-//           })
-//           .catch(error => {
-//             console.log(error);
-//           });
-//       });
-//     })
-//     .catch(error => {
-//       response.json(httpResponses.onServerAdminFail);
-//     });
-// }
-
-function search(request, response) {
-  if (request.body.access !== 'Admin') {
-    return response.json(httpResponses.clientAdminFailed);
-  }
-
-  utils.checkUserControl(request.body.id)
-    .then(admin => {
-      let search = request.body.search;
-      let regex = new RegExp(search,'i');
-
-      Employees.find({ $or: [ { username: regex }] }, (error, docs) => {
-        if (error) return response.json(error);
-        return response.json(docs)
-      });
-    })
-    .catch(error => {
-      return response.json(httpResponses.onServerAdminFail);
-    });
-}
-
 function profile(request, response) {
   if (request.query.access !== 'Admin') {
     return response.json(httpResponses.clientAdminFailed);
@@ -136,8 +86,6 @@ function performUpdateProfileChecks() {
 }
 
 module.exports = {
-  // deactivate: deactivate,
-  search: search,
   profile: profile,
   updateProfile: updateProfile
 };
