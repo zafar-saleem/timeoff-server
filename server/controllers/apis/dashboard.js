@@ -2,7 +2,7 @@
 
 const passport = require('passport');
 const express = require('express');
-const dashboardService = require('../../services/dashboard/dashboard');
+
 const totalService = require('../../services/dashboard/total');
 const onlineService = require('../../services/dashboard/online');
 const activitiesService = require('../../services/dashboard/activities');
