@@ -3,7 +3,6 @@
 const passport = require('passport');
 const express = require('express');
 
-const adminService = require('../../services/admin/admin');
 const newService = require('../../services/admin/new');
 const listService = require('../../services/admin/list');
 const deactivateService = require('../../services/admin/deactivate');

@@ -5,22 +5,6 @@ const Activities = require('../../models/Activities');
 
 const utils = require('../../utils');
 
-function fetchEmployeesCount(request, response) {
-  const id = request.query.id;
-
-  utils.checkUserControl(id)
-    .then(user => {
-      Employees.find({}, (error, docs) => {
-        if (error) response.json(error);
-
-        response.json({ total: docs.length });
-      });
-    })
-    .catch(error => {
-      response.json(error);
-    });
-}
-
 function fetchOnlineEmployees(request, response) {
   const id = request.query.id;
 
@@ -54,7 +38,6 @@ function fetchActivities(request, response) {
 }
 
 module.exports = {
-  fetchEmployeesCount: fetchEmployeesCount,
   fetchOnlineEmployees: fetchOnlineEmployees,
   fetchActivities: fetchActivities
 }
