@@ -36,7 +36,7 @@ function update(request, response) {
   usernameCheck = request.body.username;
   passwordCheck = request.body.password;
 
-  if (request.body.access !== 'Admin') {
+  if (request.body.access.toLowerCase() !== 'admin') {
     return response.json(httpResponses.clientAdminFailed);
   }
 
