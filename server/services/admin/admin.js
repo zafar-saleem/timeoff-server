@@ -12,37 +12,37 @@ const httpResponses = require('./');
 
 let user, activity, usernameCheck, role, passwordCheck;
 
-function save(request, response) {
-  const { name, role, position, username, password, email } = request.body;
-  user = username;
-  usernameCheck = username;
-  passwordCheck = password;
+// function save(request, response) {
+//   const { name, role, position, username, password, email } = request.body;
+//   user = username;
+//   usernameCheck = username;
+//   passwordCheck = password;
 
-  if (request.body.admin.access !== 'Admin') {
-    return response.json(httpResponses.clientAdminFailed);
-  }
+//   if (request.body.admin.access !== 'Admin') {
+//     return response.json(httpResponses.clientAdminFailed);
+//   }
 
-  if (performUpdateProfileChecks() !== true) {
-    return response.json(performUpdateProfileChecks());
-  }
+//   if (performUpdateProfileChecks() !== true) {
+//     return response.json(performUpdateProfileChecks());
+//   }
   
-  utils.checkUserControl(request.body.admin.id)
-    .then(user => {
-      let employee = new Employees({ name, email, role, position, username, password, status: false, active: true });
+//   utils.checkUserControl(request.body.admin.id)
+//     .then(user => {
+//       let employee = new Employees({ name, email, role, position, username, password, status: false, active: true });
 
-      employee.save(error => {
-        if (error) return response.json(error);
+//       employee.save(error => {
+//         if (error) return response.json(error);
 
-        activity = `Admin created ${request.body.name}`;
+//         activity = `Admin created ${request.body.name}`;
 
-        utils.setActivity(request.body.name, activity);
+//         utils.setActivity(request.body.name, activity);
 
-        return response.json(httpResponses.employeeAddedSuccessfully);
-      });
-    }).catch(error => {
-      return response.json(error);
-    });
-}
+//         return response.json(httpResponses.employeeAddedSuccessfully);
+//       });
+//     }).catch(error => {
+//       return response.json(error);
+//     });
+// }
 
 function fetchEmployees(request, response) {
   if (request.query.access !== 'Admin') {
@@ -204,7 +204,7 @@ function performUpdateProfileChecks() {
 }
 
 module.exports = {
-  save: save,
+  // save: save,
   fetchEmployees: fetchEmployees,
   deactivate: deactivate,
   search: search,
