@@ -4,6 +4,8 @@ const Activities = require('../../models/Activities');
 const utils = require('../../utils');
 const httpResponses = require('./');
 
+let user, activity, usernameCheck, passwordCheck;
+
 function save(request, response) {
   const { name, role, position, username, password, email } = request.body;
   user = username;
