@@ -12,74 +12,6 @@ const httpResponses = require('./');
 
 let user, activity, usernameCheck, role, passwordCheck;
 
-// function save(request, response) {
-//   const { name, role, position, username, password, email } = request.body;
-//   user = username;
-//   usernameCheck = username;
-//   passwordCheck = password;
-
-//   if (request.body.admin.access !== 'Admin') {
-//     return response.json(httpResponses.clientAdminFailed);
-//   }
-
-//   if (performUpdateProfileChecks() !== true) {
-//     return response.json(performUpdateProfileChecks());
-//   }
-  
-//   utils.checkUserControl(request.body.admin.id)
-//     .then(user => {
-//       let employee = new Employees({ name, email, role, position, username, password, status: false, active: true });
-
-//       employee.save(error => {
-//         if (error) return response.json(error);
-
-//         activity = `Admin created ${request.body.name}`;
-
-//         utils.setActivity(request.body.name, activity);
-
-//         return response.json(httpResponses.employeeAddedSuccessfully);
-//       });
-//     }).catch(error => {
-//       return response.json(error);
-//     });
-// }
-
-function fetchEmployees(request, response) {
-  if (request.query.access !== 'Admin') {
-    return response.json(httpResponses.clientAdminFailed);
-  }
-  
-  let sortBy;
-
-  if (request.query.order === 'asc') {
-    sortBy = `-${request.query.sortBy}`;
-  } else {
-    sortBy = request.query.sortBy;
-  }
-
-  utils.checkUserControl(request.query.id)
-    .then(user => {
-      Employees.find({}, null)
-        .sort(sortBy)
-        .exec((error, docs) => {
-          if (error) return response.json(error);
-
-          let updatedDocument = docs.map(doc => {
-            let documentToObject = doc.toObject();
-
-            delete documentToObject.password;
-
-            return documentToObject;
-          });
-
-          return response.json(updatedDocument);
-      });
-    })
-    .catch(error => {
-      return response.json(httpResponses.onServerAdminFail);
-    });
-}
-
 function deactivate(request, response) {
   if (request.body.admin.access !== 'Admin') {
     return response.json(httpResponses.clientAdminFailed);
@@ -204,8 +136,6 @@ function performUpdateProfileChecks() {
 }
 
 module.exports = {
-  // save: save,
-  fetchEmployees: fetchEmployees,
   deactivate: deactivate,
   search: search,
   profile: profile,

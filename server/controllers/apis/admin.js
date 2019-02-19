@@ -5,10 +5,11 @@ const express = require('express');
 
 const adminService = require('../../services/admin/admin');
 const newService = require('../../services/admin/new');
+const listService = require('../../services/admin/list');
 
 let router = express.Router();
 
-router.get('/list', passport.authenticate('jwt', { session: false }), adminService.fetchEmployees);
+router.get('/list', passport.authenticate('jwt', { session: false }), listService.list);
 router.get('/profile', passport.authenticate('jwt', { session: false }), adminService.profile);
 
 router.post('/new', passport.authenticate('jwt', { session: false }), newService.save);
