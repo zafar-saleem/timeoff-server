@@ -44,5 +44,8 @@ To create an admin user, go to `http://localhost:PORTNUMBER/register` and enter 
 
 `db.users.update({"username": "root"}, {$set:{"role":"Admin"}})`
 
+# Contributions
+In order to contribute, please open issues and make pull requests.
+
 # Contact
 timeoff.sendmail@gmail.com
