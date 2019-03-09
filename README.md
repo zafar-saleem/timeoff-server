@@ -4,6 +4,11 @@
 
 [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Your%20employees%20want%20to%20set%20vacation%20before%20taking%20their%20time%20off?%20Here%20is%20an%20open%20source%20project%20that%20can%20help%20you%20to%20set%20their%20vacations&url=https://github.com/zafar-saleem/timeoff-server)
 
+<p align="center">
+  <a target="_blank" href='https://www.facebook.com/TimeOff-325473081302189'>facebook</a> |
+  <a target="_blank" href='https://twitter.com/TimeOff72858529'>twitter</a>
+</p>
+
 **Note: To use this project with built in user interface then use its client side implementation which could be found [here](https://github.com/zafar-saleem/timeoff-app)
 
 
