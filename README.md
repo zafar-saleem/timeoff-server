@@ -9,7 +9,7 @@
   <a target="_blank" href='https://twitter.com/TimeOff72858529'>Twitter</a>
 </p>
 
-**Note: To use this project with built in user interface then use its client side implementation which could be found [here](https://github.com/zafar-saleem/timeoff-app)
+**Note**: To use this project with built in user interface then use its client side implementation which could be found [here](https://github.com/zafar-saleem/timeoff-app)
 
 
 TimeOff is an application that allows companies and organizations to allow their employees to set vacations before they take their time off. TimeOff is an easy to use vacation setter with just few clicks.
@@ -40,7 +40,7 @@ To run this project locally, use `nodemon` package. Run `nodemon index.js` in ti
 
 ![Video](screenshots/timeoff-setup.gif)
 
-Note: Don't forget to setup database before following above video to setup this project.
+**Note**: Don't forget to setup database before following above video to setup this project.
 
 ## Database
 This project requires setting up your own database on your machine. Please follow below links.
