@@ -6,7 +6,8 @@
 
 <p align="center">
   <a target="_blank" href='https://www.facebook.com/TimeOff-325473081302189'>Facebook</a> |
-  <a target="_blank" href='https://twitter.com/TimeOff72858529'>Twitter</a>
+  <a target="_blank" href='https://twitter.com/TimeOff72858529'>Twitter</a> |
+  <a target="_blank" href='https://medium.com/@zafarsaleem/how-i-built-my-own-open-source-project-a876c6d6b720'>Medium</a>
 </p>
 
 **Note**: To use this project with built in user interface then use its client side implementation which could be found [here](https://github.com/zafar-saleem/timeoff-app)
