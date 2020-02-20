@@ -5,7 +5,7 @@ module.exports = {
   },
   onServerAdminFail: {
     success: false,
-    message: 'This are is for admin users only'
+    message: 'This is for admin users only'
   },
   employeeAddedSuccessfully: {
     success: true,
