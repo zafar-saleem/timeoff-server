@@ -18,7 +18,7 @@
     "jade": "~1.11.0",
     "jsonwebtoken": "^8.1.1",
     "line-by-line": "^0.1.6",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "mongoose": "^5.0.3",
     "morgan": "^1.9.0",
     "passport": "^0.4.0",
