@@ -7,7 +7,7 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.18.2",
     "commander": "^2.19.0",
     "cookie-parser": "~1.4.3",
