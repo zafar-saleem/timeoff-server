@@ -24,6 +24,6 @@
     "passport": "^0.4.0",
     "passport-jwt": "^3.0.1",
     "serve-favicon": "~2.4.5",
-    "shelljs": ">=0.8.2"
+    "shelljs": ">=0.8.5"
   }
 }
